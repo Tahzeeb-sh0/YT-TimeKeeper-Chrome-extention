@@ -1,51 +1,102 @@
 import { getCurrentTabURL } from "./utils.js";
 
-const addNewBookmark = () => {};
+/* ---------------- ADD BOOKMARK UI ---------------- */
+const addNewBookmark = (bookmarksElement, bookmark) => {
+  const bookmarkTitleElement = document.createElement("div");
+  const newBookmarkElement = document.createElement("div");
+  const controlElement = document.createElement("div");
 
-const viewBookmarks = (currentBookmarks=[]) => {
-    const bookmarksElement = document.getElementsByClassName("bookmarks")[0];
-    bookmarksElement.innerHTML = '';
+  bookmarkTitleElement.textContent = bookmark.dec;
+  bookmarkTitleElement.className = "bookmark-title";
 
-    if(currentBookmarks.length > 0){
+  controlElement.className = "bookmark-controls";
 
-        for(i = 0; i = currentBookmarks.length;i++){
-            const bookmark = currentBookmarks[i];
-            addNewBookmark(bookmarksElement,bookmark);
-        }
-        
-    }else{
-        bookmarksElement.innerHTML = '<div class="title">No bookmarks to display.</div>';
-    }
-    
+  newBookmarkElement.id = `bookmark-${bookmark.time}`;
+  newBookmarkElement.className = "bookmark";
+  newBookmarkElement.dataset.timestamp = bookmark.time;
+
+  setBookmarkAttributes("play", onPlay, controlElement);
+  setBookmarkAttributes("delete", onDelete, controlElement);
+
+  newBookmarkElement.appendChild(bookmarkTitleElement);
+  newBookmarkElement.appendChild(controlElement);
+  bookmarksElement.appendChild(newBookmarkElement);
 };
 
-const onPlay = e => {};
+/* ---------------- VIEW ---------------- */
+const viewBookmarks = (currentBookmarks = []) => {
+  const bookmarksElement = document.querySelector(".bookmarks");
+  bookmarksElement.innerHTML = "";
 
-const onDelete = e => {};
+  if (!currentBookmarks.length) {
+    bookmarksElement.innerHTML =
+      '<div class="title">No bookmarks to display.</div>';
+    return;
+  }
 
-const setBookmarkAttributes =  () => {};
+  currentBookmarks.forEach((bookmark) =>
+    addNewBookmark(bookmarksElement, bookmark)
+  );
+};
 
-document.addEventListener("DOMContentLoaded", async () => {
+/* ---------------- PLAY ---------------- */
+const onPlay = async (e) => {
+  const bookmarkElement = e.target.closest(".bookmark");
+  const bookmarkTime = Number(bookmarkElement.dataset.timestamp);
 
-    const activeTab = await getCurrentTabURL();
-    const queryParameters = activeTab.url.split("?")[1];
-    const urlParameters = new URLSearchParams(queryParameters);
-    const currentVideo =  urlParameters.get("v");
+  const activeTab = await getCurrentTabURL();
 
-    console.log(currentVideo);
+  chrome.tabs.sendMessage(activeTab.id, {
+    type: "PLAY",
+    value: bookmarkTime,
+  });
+};
 
-    if(activeTab.url.includes("youtube.com/watch")) {
+/* ---------------- DELETE ---------------- */
+const onDelete = async (e) => {
+  const bookmarkElement = e.target.closest(".bookmark");
+  const bookmarkTime = Number(bookmarkElement.dataset.timestamp);
 
-        chrome.storage.sync.get([currentVideo], (result) => {
-           const currentVideoBookmarks = result[currentVideo] ? JSON.parse(result[currentVideo]) : [];
+  const activeTab = await getCurrentTabURL();
 
-           viewBookmarks(currentVideoBookmarks);
-           
-        });
-        
-    }else{
-        const container = document.getElementsByClassName("container")[0];
-        container.innerHTML = '<div class="title">This is not a YouTube video page.</div>';
+  chrome.tabs.sendMessage(
+    activeTab.id,
+    {
+      type: "DELETE",
+      value: bookmarkTime,
+    },
+    (updatedBookmarks) => {
+      viewBookmarks(updatedBookmarks);
     }
+  );
+};
 
+/* ---------------- ICON HELPER ---------------- */
+const setBookmarkAttributes = (type, handler, parent) => {
+  const control = document.createElement("img");
+  control.src = chrome.runtime.getURL(`assets/${type}.png`);
+  control.title = type;
+  control.addEventListener("click", handler);
+  parent.appendChild(control);
+};
+
+/* ---------------- INIT ---------------- */
+document.addEventListener("DOMContentLoaded", async () => {
+  const activeTab = await getCurrentTabURL();
+
+  if (!activeTab.url.includes("youtube.com/watch")) {
+    document.querySelector(".container").innerHTML =
+      '<div class="title">This is not a YouTube video page.</div>';
+    return;
+  }
+
+  const url = new URL(activeTab.url);
+  const currentVideo = url.searchParams.get("v");
+
+  chrome.storage.sync.get([currentVideo], (result) => {
+    const bookmarks = result[currentVideo]
+      ? JSON.parse(result[currentVideo])
+      : [];
+    viewBookmarks(bookmarks);
+  });
 });
