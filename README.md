@@ -29,17 +29,17 @@
   <figure style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; width: 45%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     <!-- Replace with your actual screenshot path -->
     <img src="screenshots/bookmark-button.png" alt="Bookmark Button in Player" style="max-width: 100%; height: auto; border-radius: 4px;">
-    <figcaption style="margin-top: 8px; font-size: 0.9em; color: #555;"><em>The bookmark button integrates into YouTube's player controls.</em></figcaption>
+    <figcaption style="margin-top: 10px; font-size: 0.9em; color: #555;"><em>The bookmark button integrates into YouTube's player controls.</em></figcaption>
   </figure>
   <figure style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; width: 45%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     <!-- Replace with your actual screenshot path -->
     <img src="screenshots/popup-interface.png" alt="Extension Popup" style="max-width: 100%; height: auto; border-radius: 4px;">
-    <figcaption style="margin-top: 8px; font-size: 0.9em; color: #555;"><em>View all your bookmarks for the current video in a clean popup.</em></figcaption>
+    <figcaption style="margin-top: 10px; font-size: 0.9em; color: #555;"><em>View all your bookmarks for the current video in a clean popup.</em></figcaption>
   </figure>
   <figure style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; width: 45%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     <!-- Replace with your actual screenshot path -->
     <img src="screenshots/bookmarks-list.png" alt="Bookmarks List with Actions" style="max-width: 100%; height: auto; border-radius: 4px;">
-    <figcaption style="margin-top: 8px; font-size: 0.9em; color: #555;"><em>Easily play or delete any bookmark with a single click.</em></figcaption>
+    <figcaption style="margin-top: 10px; font-size: 0.9em; color: #555;"><em>Easily play or delete any bookmark with a single click.</em></figcaption>
   </figure>
 </div>
 
