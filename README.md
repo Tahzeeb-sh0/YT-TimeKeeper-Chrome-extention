@@ -147,5 +147,5 @@
 <hr>
 <div align="center">
   <p>Made with ❤️ for YouTube enthusiasts</p>
-  <p>© 2023 Your Name. Licensed under <a href="LICENSE">MIT License</a>.</p>
+  <p>© 2023 Tahzeeb shiakh.Licensed under <a href="LICENSE">MIT License</a>.</p>
 </div>
