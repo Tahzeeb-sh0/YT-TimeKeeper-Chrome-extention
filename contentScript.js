@@ -97,6 +97,10 @@
 
     youtubeLeftControls.appendChild(bookmarkBtn);
     bookmarkBtn.addEventListener("click", addNewBookmark);
+
+    bookmarkBtn.addEventListener("click", () => {
+      alert("Bookmark added!");
+    });
   };
 
   /* =====================================================

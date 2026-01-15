@@ -76,8 +76,11 @@ const setBookmarkAttributes = (type, handler, parent) => {
   const control = document.createElement("img");
   control.src = chrome.runtime.getURL(`assets/${type}.png`);
   control.title = type;
-  control.addEventListener("click", handler);
+  const taped = control.addEventListener("click",handler);
+ 
   parent.appendChild(control);
+
+
 };
 
 /* ---------------- INIT ---------------- */
